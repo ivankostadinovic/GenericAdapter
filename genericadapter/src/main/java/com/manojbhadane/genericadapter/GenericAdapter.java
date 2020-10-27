@@ -1,53 +1,56 @@
 package com.manojbhadane.genericadapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author manoj.bhadane manojbhadane777@gmail.com
- *
+ * edited by ivambass1@gmail.com
  */
-public abstract class GenericAdapter<T, D> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context mContext;
-    private ArrayList<T> mArrayList;
+public abstract class GenericAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public GenericAdapter(Context context, ArrayList<T> arrayList) {
-        this.mContext = context;
-        this.mArrayList = arrayList;
+    private List<T> mArrayList;
+    private int layoutResId;
+
+    public GenericAdapter(List<T> arrayList, @LayoutRes int layoutResId) {
+        this.mArrayList = new ArrayList<>();
+        this.mArrayList.addAll(arrayList);
+        this.layoutResId = layoutResId;
     }
-
-    public abstract int getLayoutResId();
 
     public abstract void onBindData(T model, int position, D dataBinding);
 
     public abstract void onItemClick(T model, int position);
 
+    public void onCreateHolder(D dataBinding) {
+    }
+
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewDataBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), getLayoutResId(), parent, false);
-        RecyclerView.ViewHolder holder = new ItemViewHolder(dataBinding);
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewDataBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutResId, parent, false);
+        onCreateHolder((D) dataBinding);
+        return new ItemViewHolder(dataBinding);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, mArrayList.get(position));
         onBindData(mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
+        ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
+        ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(mArrayList.get(position), position));
 
-        ((ViewDataBinding) ((ItemViewHolder) holder).mDataBinding).getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemClick(mArrayList.get(position), position);
-            }
-        });
     }
 
     @Override
@@ -55,23 +58,39 @@ public abstract class GenericAdapter<T, D> extends RecyclerView.Adapter<Recycler
         return mArrayList.size();
     }
 
+    public void setItems(List<T> arrayList) {
+        if (mArrayList != arrayList) {
+            mArrayList = new ArrayList<>();
+            mArrayList.addAll(arrayList);
+            notifyDataSetChanged();
+        }
+    }
+
     public void addItems(ArrayList<T> arrayList) {
-        mArrayList = arrayList;
-        this.notifyDataSetChanged();
+        mArrayList.addAll(arrayList);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        mArrayList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(T item) {
+        int position = mArrayList.indexOf(item);
+        mArrayList.remove(item);
+        notifyItemRemoved(position);
     }
 
     public T getItem(int position) {
         return mArrayList.get(position);
     }
 
-    public Context getContext() {
-        return mContext;
-    }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
-        protected D mDataBinding;
+    private class ItemViewHolder extends RecyclerView.ViewHolder {
+        private D mDataBinding;
 
-        public ItemViewHolder(ViewDataBinding binding) {
+        private ItemViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             mDataBinding = (D) binding;
         }
