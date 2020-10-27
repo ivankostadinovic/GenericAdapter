@@ -2,7 +2,6 @@ package com.manojbhadane.genericadapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
