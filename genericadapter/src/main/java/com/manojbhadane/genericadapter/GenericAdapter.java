@@ -21,13 +21,22 @@ import java.util.List;
 
 public abstract class GenericAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<T> mArrayList;
+    public static final int DEFAULT_PAGINATION_OFFSET = 3;
+
+    private List<T> mArrayList = new ArrayList<>();
     private int layoutResId;
+    private int paginationOffset = DEFAULT_PAGINATION_OFFSET;
 
     public GenericAdapter(List<T> arrayList, @LayoutRes int layoutResId) {
+        this.mArrayList.addAll(arrayList);
+        this.layoutResId = layoutResId;
+    }
+
+    public GenericAdapter(List<T> arrayList, @LayoutRes int layoutResId, int paginationOffset) {
         this.mArrayList = new ArrayList<>();
         this.mArrayList.addAll(arrayList);
         this.layoutResId = layoutResId;
+        this.paginationOffset = paginationOffset;
     }
 
     public abstract void onBindData(T model, int position, D dataBinding);
@@ -35,6 +44,10 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     public abstract void onItemClick(T model, int position);
 
     public void onCreateHolder(D dataBinding) {
+    }
+
+    public void loadMoreItems() {
+
     }
 
     @NonNull
@@ -51,7 +64,9 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
         onBindData(mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
         ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(mArrayList.get(position), position));
-
+        if (position == getItemCount() - paginationOffset) {
+            loadMoreItems();
+        }
     }
 
     @Override
