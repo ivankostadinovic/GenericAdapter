@@ -60,10 +60,11 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        final T item = mArrayList.get(position);
         ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, mArrayList.get(position));
         onBindData(mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
-        ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(mArrayList.get(position), position));
+        ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(item, position));
         if (position == getItemCount() - paginationOffset) {
             loadMoreItems();
         }
@@ -83,8 +84,9 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     }
 
     public void addItems(ArrayList<T> arrayList) {
+        int currentSize = mArrayList.size();
         mArrayList.addAll(arrayList);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(currentSize, arrayList.size());
     }
 
     public void clearItems() {
@@ -95,6 +97,11 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     public void removeItem(T item) {
         int position = mArrayList.indexOf(item);
         mArrayList.remove(item);
+        notifyItemRemoved(position);
+    }
+
+    public void removeItem(int position) {
+        mArrayList.remove(position);
         notifyItemRemoved(position);
     }
 
