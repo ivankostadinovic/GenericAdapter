@@ -83,10 +83,10 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
         }
     }
 
-    public void addItems(ArrayList<T> arrayList) {
+    public void addItems(List<T> list) {
         int currentSize = mArrayList.size();
-        mArrayList.addAll(arrayList);
-        notifyItemRangeInserted(currentSize, arrayList.size());
+        mArrayList.addAll(list);
+        notifyItemRangeInserted(currentSize, list.size());
     }
 
     public void clearItems() {
