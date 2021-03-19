@@ -23,7 +23,7 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
 
     public static final int DEFAULT_PAGINATION_OFFSET = 3;
 
-    private List<T> mArrayList = new ArrayList<>();
+    public List<T> mArrayList = new ArrayList<>();
     private int layoutResId;
     private int paginationOffset = DEFAULT_PAGINATION_OFFSET;
 
@@ -107,6 +107,11 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
 
     public T getItem(int position) {
         return mArrayList.get(position);
+    }
+
+    public void addItem(T item, int position) {
+        mArrayList.add(position, item);
+        notifyItemInserted(position);
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
