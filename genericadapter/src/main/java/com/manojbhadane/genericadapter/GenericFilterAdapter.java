@@ -105,6 +105,13 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         return mArrayListFilter.get(position);
     }
 
+    public void removeItem(int position) {
+        T itemToRemove = mArrayListFilter.get(position);
+        mArrayListFilter.remove(position);
+        mArrayList.remove(itemToRemove);
+        notifyItemRemoved(position);
+    }
+
     private class ItemViewHolder extends RecyclerView.ViewHolder {
         private D mDataBinding;
 
