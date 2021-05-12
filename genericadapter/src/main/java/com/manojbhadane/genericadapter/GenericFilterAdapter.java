@@ -3,8 +3,6 @@ package com.manojbhadane.genericadapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -19,23 +17,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import kotlin.collections.CollectionsKt;
 
 /**
  * @author manoj.bhadane manojbhadane777@gmail.com
  * edited by ivankostadinovic1994@outlook.com
  */
 
-public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
+public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<T> mArrayList = new ArrayList<>();
     private List<T> mArrayListFilter = new ArrayList<>();
     private final int layoutResId;
-    private final EditText searchView;
     private final Disposable searchDisposable;
 
     public abstract void onBindData(T model, int position, D dataBinding);
 
     public abstract void onItemClick(T model, int position);
+
+    public abstract boolean filter(T item, String text);
 
     public void onCreateHolder(D dataBinding) {
     }
@@ -44,11 +44,15 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         this.mArrayList.addAll(arrayList);
         this.mArrayListFilter.addAll(arrayList);
         this.layoutResId = layoutResId;
-        this.searchView = searchView;
 
         searchDisposable = RxTextView
-            .textChanges(this.searchView)
-            .subscribe(text -> getFilter().filter(text));
+            .textChanges(searchView)
+            .subscribe(this::filterList);
+    }
+
+    private void filterList(CharSequence text) {
+        mArrayListFilter = CollectionsKt.filter(mArrayList, item -> filter(item, text.toString()));
+        notifyDataSetChanged();
     }
 
     @Override
@@ -108,43 +112,5 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
             super(binding.getRoot());
             mDataBinding = (D) binding;
         }
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-
-                List<T> arrayList = new ArrayList<>();
-
-                try {
-                    if (charSequence.toString().isEmpty()) {
-                        arrayList = mArrayList;
-                    } else {
-                        arrayList = performFilter(charSequence.toString().trim(), mArrayList);
-                        if (arrayList == null) {
-                            arrayList = mArrayList;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = arrayList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mArrayListFilter = (ArrayList<T>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public List<T> performFilter(String text, List<T> originalList) {
-        return null;
     }
 }
