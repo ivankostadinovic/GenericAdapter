@@ -75,10 +75,11 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, mArrayListFilter.get(position));
-        onBindData(mArrayListFilter.get(position), position, ((ItemViewHolder) holder).mDataBinding);
+        final T item = mArrayListFilter.get(position);
+        ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, item);
+        onBindData(item, position, ((ItemViewHolder) holder).mDataBinding);
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
-        ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(mArrayListFilter.get(position), position));
+        ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(item, position));
 
     }
 

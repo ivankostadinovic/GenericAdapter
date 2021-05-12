@@ -61,8 +61,8 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final T item = mArrayList.get(position);
-        ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, mArrayList.get(position));
-        onBindData(mArrayList.get(position), position, ((ItemViewHolder) holder).mDataBinding);
+        ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, item);
+        onBindData(item, position, ((ItemViewHolder) holder).mDataBinding);
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
         ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(item, position));
         if (position == getItemCount() - paginationOffset) {
