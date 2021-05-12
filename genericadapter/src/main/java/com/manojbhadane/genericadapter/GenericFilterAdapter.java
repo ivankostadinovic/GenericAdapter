@@ -30,6 +30,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
     private List<T> mArrayListFilter = new ArrayList<>();
     private final int layoutResId;
     private final Disposable searchDisposable;
+    private final EditText searchView;
 
     public abstract void onBindData(T model, int position, D dataBinding);
 
@@ -44,6 +45,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         this.mArrayList.addAll(arrayList);
         this.mArrayListFilter.addAll(arrayList);
         this.layoutResId = layoutResId;
+        this.searchView = searchView;
 
         searchDisposable = RxTextView
             .textChanges(searchView)
@@ -91,7 +93,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
             mArrayList.addAll(arrayList);
             mArrayListFilter = new ArrayList<>();
             mArrayListFilter.addAll(arrayList);
-            notifyDataSetChanged();
+            filterList(searchView.getText().toString());
         }
     }
 
