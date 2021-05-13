@@ -44,7 +44,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
     public void onCreateHolder(D dataBinding) {
     }
 
-    public void loadMoreItems() {
+    public void loadMoreItems(int loadedCount) {
 
     }
 
@@ -100,7 +100,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
         ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(item, position));
         if (position == getItemCount() - paginationOffset) {
-            loadMoreItems();
+            loadMoreItems(list.size());
         }
     }
 
