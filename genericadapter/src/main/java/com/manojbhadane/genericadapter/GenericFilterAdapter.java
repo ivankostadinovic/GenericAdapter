@@ -26,11 +26,14 @@ import kotlin.collections.CollectionsKt;
 
 public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<T> mArrayList = new ArrayList<>();
-    private List<T> mArrayListFilter = new ArrayList<>();
+    private List<T> list = new ArrayList<>();
+    private List<T> filteredList = new ArrayList<>();
     private final int layoutResId;
     private final Disposable searchDisposable;
     private final EditText searchView;
+    public static final int DEFAULT_PAGINATION_OFFSET = 3;
+
+    public int paginationOffset = DEFAULT_PAGINATION_OFFSET;
 
     public abstract void onBindData(T model, int position, D dataBinding);
 
@@ -41,9 +44,13 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
     public void onCreateHolder(D dataBinding) {
     }
 
+    public void loadMoreItems() {
+
+    }
+
     public GenericFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView) {
-        this.mArrayList.addAll(arrayList);
-        this.mArrayListFilter.addAll(arrayList);
+        this.list.addAll(arrayList);
+        this.filteredList.addAll(arrayList);
         this.layoutResId = layoutResId;
         this.searchView = searchView;
 
@@ -52,8 +59,20 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
             .subscribe(this::filterList);
     }
 
+    public GenericFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView, int paginationOffset) {
+        this.list.addAll(arrayList);
+        this.filteredList.addAll(arrayList);
+        this.layoutResId = layoutResId;
+        this.searchView = searchView;
+        this.paginationOffset = paginationOffset;
+
+        searchDisposable = RxTextView
+            .textChanges(searchView)
+            .subscribe(this::filterList);
+    }
+
     private void filterList(CharSequence text) {
-        mArrayListFilter = CollectionsKt.filter(mArrayList, item -> filter(item, text.toString()));
+        filteredList = CollectionsKt.filter(list, item -> filter(item, text.toString()));
         notifyDataSetChanged();
     }
 
@@ -75,51 +94,60 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        final T item = mArrayListFilter.get(position);
+        final T item = filteredList.get(position);
         ((ItemViewHolder) holder).mDataBinding.setVariable(BR.data, item);
         onBindData(item, position, ((ItemViewHolder) holder).mDataBinding);
         ((ItemViewHolder) holder).mDataBinding.executePendingBindings();
         ((ItemViewHolder) holder).mDataBinding.getRoot().setOnClickListener(view -> onItemClick(item, position));
-
+        if (position == getItemCount() - paginationOffset) {
+            loadMoreItems();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mArrayListFilter.size();
+        return filteredList.size();
     }
 
     public void setItems(List<T> arrayList) {
-        if (mArrayList != arrayList) {
-            mArrayList = new ArrayList<>();
-            mArrayList.addAll(arrayList);
-            mArrayListFilter = new ArrayList<>();
-            mArrayListFilter.addAll(arrayList);
+        if (list != arrayList) {
+            list = new ArrayList<>();
+            list.addAll(arrayList);
+            filteredList = new ArrayList<>();
+            filteredList.addAll(arrayList);
             filterList(searchView.getText().toString());
         }
     }
 
     public void clearItems() {
-        mArrayList.clear();
-        mArrayListFilter.clear();
+        list.clear();
+        filteredList.clear();
         notifyDataSetChanged();
     }
 
     public T getItem(int position) {
-        return mArrayListFilter.get(position);
+        return filteredList.get(position);
     }
 
     public void removeItem(int position) {
-        T itemToRemove = mArrayListFilter.get(position);
-        mArrayListFilter.remove(position);
-        mArrayList.remove(itemToRemove);
+        T itemToRemove = filteredList.get(position);
+        filteredList.remove(position);
+        list.remove(itemToRemove);
         notifyItemRemoved(position);
     }
 
     public void removeItem(T item) {
-        int position = mArrayList.indexOf(item);
-        mArrayListFilter.remove(item);
-        mArrayList.remove(item);
+        int position = list.indexOf(item);
+        filteredList.remove(item);
+        list.remove(item);
         notifyItemRemoved(position);
+    }
+
+    public void addItems(List<T> items) {
+        list.addAll(items);
+        List<T> newFilteredItems = CollectionsKt.filter(items, item -> filter(item, searchView.getText().toString()));
+        list.addAll(newFilteredItems);
+        notifyItemRangeInserted(filteredList.size(), newFilteredItems.size());
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
