@@ -146,7 +146,7 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
     public void addItems(List<T> items) {
         list.addAll(items);
         List<T> newFilteredItems = CollectionsKt.filter(items, item -> filter(item, searchView.getText().toString()));
-        list.addAll(newFilteredItems);
+        filteredList.addAll(newFilteredItems);
         notifyItemRangeInserted(filteredList.size(), newFilteredItems.size());
     }
 
