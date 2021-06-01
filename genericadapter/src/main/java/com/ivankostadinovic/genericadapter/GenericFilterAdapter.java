@@ -1,4 +1,4 @@
-package com.manojbhadane.genericadapter;
+package com.ivankostadinovic.genericadapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -148,6 +148,18 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         List<T> newFilteredItems = CollectionsKt.filter(items, item -> filter(item, searchView.getText().toString()));
         filteredList.addAll(newFilteredItems);
         notifyItemRangeInserted(filteredList.size(), newFilteredItems.size());
+    }
+
+    /**
+     * @param item - updated item
+     * @param position - updated item position
+     * Warning - for this method to work equals method must be overridden for the T class to perform equals check on id's or other unique identifiers that won't be changed
+     */
+    public void updateItem(T item, int position) {
+        int unfilteredListPosition = list.indexOf(item);
+        list.set(unfilteredListPosition, item);
+        filteredList.set(position, item);
+        notifyItemChanged(position);
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {

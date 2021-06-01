@@ -1,4 +1,4 @@
-package com.manojbhadane.genericadapter;
+package com.ivankostadinovic.genericadapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -112,6 +112,11 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     public void addItem(T item, int position) {
         list.add(position, item);
         notifyItemInserted(position);
+    }
+
+    public void updateItem(T item, int position) {
+        list.set(position, item);
+        notifyItemChanged(position);
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
