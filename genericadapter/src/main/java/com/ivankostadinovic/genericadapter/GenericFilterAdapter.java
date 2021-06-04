@@ -149,14 +149,9 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
         filteredList.addAll(newFilteredItems);
         notifyItemRangeInserted(filteredList.size(), newFilteredItems.size());
     }
-
-    /**
-     * @param item - updated item
-     * @param position - updated item position
-     * Warning - for this method to work equals method must be overridden for the T class to perform equals check on id's or other unique identifiers that won't be changed
-     */
+    
     public void updateItem(T item, int position) {
-        int unfilteredListPosition = list.indexOf(item);
+        int unfilteredListPosition = list.indexOf(filteredList.get(position));
         list.set(unfilteredListPosition, item);
         filteredList.set(position, item);
         notifyItemChanged(position);
