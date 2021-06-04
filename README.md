@@ -2,7 +2,7 @@
 
 <p align="center">
   <a target="_blank" href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg"></a>
-  <a target="_blank" href="https://jitpack.io/#manojbhadane/GenericAdapter"><img src="https://jitpack.io/v/manojbhadane/GenericAdapter.svg"></a>
+  <a target="_blank" href="https://jitpack.io/#ivankostadinovic/GenericAdapter/1.5.3r"><img src="https://jitpack.io/v/manojbhadane/GenericAdapter.svg"></a>
   <a target="_blank" href="https://android-arsenal.com/details/1/7607"><img src="https://img.shields.io/badge/Android%20Arsenal-GenericAdapter-brightgreen.svg?style=flat"></a>
   <a target="_blank" href="https://paypal.me/manojbhadane" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 </p>
