@@ -105,7 +105,7 @@ Both adapters have support for pagination. If you wish to use pagination with th
         adapter.addItems(newItems);
 ```
 
-## Binding the data to the view
+## Binding data to the view
 Instead of binding the data manually in the **onBindData** method, the library takes cares of this internally, and you can access that data through the XML.
 The data variable name should be set to "data" in the layout for this to work. Example how a layout file should like in order to use this functionality.
 ```xml
