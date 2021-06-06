@@ -85,7 +85,6 @@ You can optionally add things like focus listeners that would require to be set 
 
             }
         ...
-        };
 ```
 
 
@@ -99,7 +98,6 @@ Both adapters have support for pagination. If you wish to use pagination with th
                 //make API/db call
             }
         ...
-        };
 ```
 And then call the **addItems** on the adapter object to add the items at the end of the list.
 
