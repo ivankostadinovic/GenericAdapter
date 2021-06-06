@@ -42,7 +42,7 @@ dataBinding {
         enabled true
 }
 ```
-### Sample code of adapter without filter:
+### Sample code of adapter without filter
 ```Java
         adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item) {
             @Override
@@ -58,7 +58,7 @@ dataBinding {
         recyclerView.setAdapter(adapter);
         //don't forget to set a LayoutManager to the recycler view
 ```
-### Sample code of adapter with filter:
+### Sample code of adapter with filter
 ```Java
         adapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
             @Override
@@ -81,7 +81,7 @@ dataBinding {
 ```
 
 ## OnCreateViewHolder override
-You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function:
+You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** method:
 ```Java
         ...
           @Override
@@ -93,7 +93,7 @@ You can optionally add things like focus listeners that would require to be set 
 
 
 ## Pagination
-Both adapters have support for pagination. If you wish to use pagination with these adapters, override the **loadMoreItems** function:
+Both adapters have support for pagination. If you wish to use pagination with these adapters, override the **loadMoreItems** method:
 ```java
         ...
           @Override
@@ -106,7 +106,7 @@ Both adapters have support for pagination. If you wish to use pagination with th
 ```
 
 ## Binding the data to the view
-Instead of binding the data manually in the **onBindData** function, the library takes cares of this internally, and you can access that data through the XML.
+Instead of binding the data manually in the **onBindData** method, the library takes cares of this internally, and you can access that data through the XML.
 The data variable name should be set to "data" in the layout for this to work. Example how a layout file should like in order to use this functionality.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -138,12 +138,33 @@ The data variable name should be set to "data" in the layout for this to work. E
             android:focusable="false"
             android:focusableInTouchMode="false"
             app:imageUrl="@{data.stream_icon}" /> 
-            <!-- imageUrl function is provided by a Binding Adapter, that is out of scope for this library-->
+            <!-- imageUrl method is provided by a Binding Adapter, that is out of scope for this library-->
     </FrameLayout>
 
 </layout>
 ```
-If you don't like this, you can still bind the data in the **onBindData** function, and set up the XML layout accordingly.
+If you don't like this, you can still bind the data in the **onBindData** method, and set up the XML layout accordingly.
+
+## Adapter methods 
+```java
+        adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item) {...}
+
+        adapter.setItems(radios); //overrides the current list with a new list
+
+        adapter.addItem(radio, itemPosition); //adds a single item at the given position
+
+        adapter.addItems(radios); //adds new items at the end of the list
+
+        adapter.removeItem(itemPosition); //removes item at the given position
+
+        adapter.removeItem(radio); //removes the particular item, if it exists in the list
+
+        adapter.clearItems(); //removes all the items from the adapter
+
+        adapter.getItem(itemPosition); //retrieves the item at the given position
+
+        adapter.updateItem(radio, itemPosition); //replaces the item at the position with a new item
+```
 
 
 # License
@@ -151,7 +172,7 @@ If you don't like this, you can still bind the data in the **onBindData** functi
 ```
 MIT License
 
-Copyright (c) 2020 Manoj Bhadane
+Copyright (c) 2021 Ivan Kostadinovic
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
