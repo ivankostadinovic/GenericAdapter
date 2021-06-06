@@ -55,10 +55,11 @@ dataBinding {
 
             }
         };
+        recyclerView.setAdapter(adapter);
 ```
 ### Sample code of adapter with filter:
 ```Java
-        contactsAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
+        adapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
             @Override
             public void onBindData(Radio model, int position, RvRadioItemBinding dataBinding) {
 
@@ -74,6 +75,7 @@ dataBinding {
                 return item.name.contains(text); //return true if the item matches the search text in the way you prefer
             }
         };
+        recyclerView.setAdapter(adapter);
 ```
 
 ## OnCreateViewHolder override
