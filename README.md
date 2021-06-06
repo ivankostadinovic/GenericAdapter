@@ -107,7 +107,7 @@ Both adapters have support for pagination. If you wish to use pagination with th
 
 ## Binding the data to the view
 Instead of binding the data manually in the **onBindData** function, the library takes cares of this internally, and you can access that data through the XML.
-The data variable name should be set to "data" for this to work. Example how a layout file should like in order to use this functionality.
+The data variable name should be set to "data" in the layout for this to work. Example how a layout file should like in order to use this functionality.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
