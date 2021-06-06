@@ -1,9 +1,9 @@
 # GenericAdapter 
 
-An Easy to use adapter for android
+An Easy to use adapter for android, a fork from [GenericAdapter](https://github.com/manojbhadane/GenericAdapter)
 
-1. No need to create separate class for adapter
-2. No need of viewholder 
+1. No need to create a separate class for each adapter
+2. No need of ViewHolder 
 3. More readable code
 
 # Supports 2 types of adapters
