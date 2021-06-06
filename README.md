@@ -60,7 +60,8 @@ dataBinding {
 ```
 ### Sample code of adapter with filter
 ```Java
-        adapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
+	EditText editSearch = findViewById(R.id.editSearch);
+        adapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, editSearch) {
             @Override
             public void onBindData(Radio model, int position, RvRadioItemBinding dataBinding) {
 
