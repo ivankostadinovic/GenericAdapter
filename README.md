@@ -58,19 +58,19 @@ dataBinding {
 ```
 Sample code of adapter with filter
 ```Java
-        contactsAdapter = new GenericFilterAdapter<ContactModelItem, RvContactItemBinding>(contacts, R.layout.rv_contact_item, binding.editSearch) {
+        contactsAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
             @Override
-            public void onBindData(ContactModelItem model, int position, RvContactItemBinding dataBinding) {
+            public void onBindData(Radio model, int position, RvRadioItemBinding dataBinding) {
 
             }
 
             @Override
-            public void onItemClick(ContactModelItem model, int position) {
+            public void onItemClick(Radio model, int position) {
                 
             }
 
             @Override
-            public boolean filter(ContactModelItem item, String searchText) {
+            public boolean filter(Radio item, String searchText) {
                 return item.name.contains(text); //return true if the item matches the search text in the way you prefer
             }
         };
