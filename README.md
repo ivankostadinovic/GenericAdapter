@@ -77,7 +77,7 @@ Sample code of adapter with filter
 ```
 
 ## OnCreateViewHolder override
-You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function
+You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function.
 ```Java
         ...
           @Override
