@@ -56,7 +56,7 @@ dataBinding {
             }
         };
 ```
-###Sample code of adapter with filter:
+### Sample code of adapter with filter:
 ```Java
         contactsAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
             @Override
