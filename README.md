@@ -36,13 +36,13 @@ dependencies {
 
 # Usage
 
-1. In App level build.gradle 
+In App level build.gradle 
 ```Gradle
 dataBinding {
         enabled true
 }
 ```
-2. In Activity/Fragment (Java)
+### Sample code of adapter without filter:
 ```Java
         adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item) {
             @Override
@@ -56,7 +56,7 @@ dataBinding {
             }
         };
 ```
-Sample code of adapter with filter
+###Sample code of adapter with filter:
 ```Java
         contactsAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, binding.editSearch) {
             @Override
@@ -77,7 +77,7 @@ Sample code of adapter with filter
 ```
 
 ## OnCreateViewHolder override
-You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function.
+You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function:
 ```Java
         ...
           @Override
@@ -89,8 +89,7 @@ You can optionally add things like focus listeners that would require to be set 
 
 
 ## Pagination
-Both adapters have support for pagination. If you wish to use pagination with these adapters, override the **loadMoreItems** function.
-
+Both adapters have support for pagination. If you wish to use pagination with these adapters, override the **loadMoreItems** function:
 ```java
         ...
           @Override
