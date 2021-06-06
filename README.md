@@ -56,6 +56,7 @@ dataBinding {
             }
         };
         recyclerView.setAdapter(adapter);
+        //don't forget to set a LayoutManager to the recycler view
 ```
 ### Sample code of adapter with filter:
 ```Java
@@ -76,6 +77,7 @@ dataBinding {
             }
         };
         recyclerView.setAdapter(adapter);
+        //don't forget to set a LayoutManager to the recycler view
 ```
 
 ## OnCreateViewHolder override
