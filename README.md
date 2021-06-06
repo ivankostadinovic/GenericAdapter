@@ -1,30 +1,15 @@
-<h4 align="center">Android Library</h4>
-
-<p align="center">
-  <a target="_blank" href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg"></a>
-  <a target="_blank" href="https://jitpack.io/#ivankostadinovic/GenericAdapter/1.5.3r"><img src="https://jitpack.io/v/manojbhadane/GenericAdapter.svg"></a>
-  <a target="_blank" href="https://android-arsenal.com/details/1/7607"><img src="https://img.shields.io/badge/Android%20Arsenal-GenericAdapter-brightgreen.svg?style=flat"></a>
-  <a target="_blank" href="https://paypal.me/manojbhadane" title="Donate using PayPal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
-</p>
-
-
-
-# GenericAdapter [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?url=https://github.com/manojbhadane/GenericAdapter)
+# GenericAdapter 
 
 An Easy to use adapter for android
 
-1. No need to create seperate class for adapter
+1. No need to create separate class for adapter
 2. No need of viewholder 
-3. More readble code
+3. More readable code
 
 # Supports 2 types of adapters
 ***GenericAdapter :*** Adapter for simple usage
 
 ***GenericFilterAdapter :*** Adapter with list filtering capability
-
-
-# Medium 
-[Please find detail medium post here, Android Generic Adapter](https://medium.com/@manojbhadane/android-generic-recyclerview-adapter-c0024161f1bc)
 
 # Download
 
@@ -45,7 +30,7 @@ allprojects
 **Step 2.** Add the dependency in your apps module build.gradle
 ```Gradle
 dependencies {
-	 implementation 'com.github.manojbhadane:GenericAdapter:v1.4'
+    implementation 'com.github.ivankostadinovic:GenericAdapter:1.5.3'
 }
 ```
 
@@ -59,110 +44,103 @@ dataBinding {
 ```
 2. In Activity/Fragment (Java)
 ```Java
- mDataBinding.recylerview.setAdapter(new GenericAdapter<PeopleModel, ListitemMainBinding>(this, arrayList) {
+        adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item) {
             @Override
-            public int getLayoutResId() {
-                return R.layout.listitem_main;
+            public void onBindData(Radio model, int position, RvRadioItemBinding dataBinding) {
+
             }
 
             @Override
-            public void onBindData(PeopleModel model, int position, ListitemMainBinding dataBinding) {
-                dataBinding.txtName.setText(model.getName());
-                dataBinding.txtAddress.setText(model.getAddress());
-            }
-
-            @Override
-            public void onItemClick(PeopleModel model, int position) {
+            public void onItemClick(Radio model, int position) {
 
             }
-        });
+        };
 ```
-3. In Activity/Fragment (Kotlin)
-```Java
- var adapter = object : GenericAdapter<PeopleModel, ListitemMainBinding>(this, arrayList) {
-            override fun getLayoutResId(): Int {
-                return R.layout.listitem_main
-            }
-
-            override fun onBindData(model: PeopleModel?, position: Int, dataBinding: ListitemMainBinding?) {
-                dataBinding!!.txtName.text = model.getName()
-		dataBinding!!.txtAddress.text = model.getAddress()
-            }
-
-            override fun onItemClick(model: PeopleModel?, position: Int) {
-
-            }
-        }
-	
-dataBinding.recyclerview.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-dataBinding.recyclerview.adapter = adapter
-
-```
-
-# v1.2
-Added ***list filtering*** capability to genericAdapter by extending GenericFilterAdapter class
-
 Sample code of adapter with filter
 ```Java
-mDataBinding.recylerview.setAdapter(new GenericFilterAdapter<PeopleModel, ListitemMainBinding>(this, arrayList) {
+        contactsAdapter = new GenericFilterAdapter<ContactModelItem, RvContactItemBinding>(contacts, R.layout.rv_contact_item, binding.editSearch) {
             @Override
-            public int getLayoutResId() {
-                return R.layout.listitem_main;
-            }
-
-            @Override
-            public void onBindData(PeopleModel model, int position, ListitemMainBinding dataBinding) {
-                dataBinding.txtName.setText(model.getName());
-                dataBinding.txtAddress.setText(model.getAddress());
-            }
-
-            @Override
-            public void onItemClick(PeopleModel model, int position) {
+            public void onBindData(ContactModelItem model, int position, RvContactItemBinding dataBinding) {
 
             }
 
             @Override
-            public View getSearchField() {
-                return mDataBinding.edtSearch;
+            public void onItemClick(ContactModelItem model, int position) {
+                
             }
 
             @Override
-            public ArrayList<PeopleModel> performFilter(String searchText, ArrayList<PeopleModel> originalList) {
-                ArrayList<PeopleModel> filteredList = new ArrayList<>();
-                for (PeopleModel row : originalList) {
-                    if (row.getName().toLowerCase().contains(searchText.toLowerCase()) 
-		    		|| row.getName().contains(searchText) 
-				|| row.getAddress().toLowerCase().contains(searchText.toLowerCase())) {
-                        filteredList.add(row);
-                    }
-                }
-
-                return filteredList;
+            public boolean filter(ContactModelItem item, String searchText) {
+                return item.name.contains(text); //return true if the item matches the search text in the way you prefer
             }
-        });
+        };
+```
+
+## OnCreateViewHolder override
+You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** function
+```Java
+        ...
+          @Override
+            public void onCreateHolder(RvRadioItemBinding dataBinding) {
+
+            }
+        ...
+        };
 ```
 
 
-# Bugs or Requests
+## Pagination
+Both adapters have support for pagination. If you wish to use pagination with these adapters, override the **loadMoreItems** function.
 
-If you encounter any problems feel free to open an [issue](https://github.com/manojbhadane/GenericAdapter/issues/new?assignees=&labels=&template=bug_report.md). If you feel the library is missing a feature, please raise a [ticket](https://github.com/manojbhadane/EasyRetro/issues/new?assignees=&labels=&template=feature_request.md) on GitHub and I'll look into it. Pull request are also welcome. 
+```java
+        ...
+          @Override
+            public void loadMoreItems(int loadedCount) {
+                //make API/db call
+            }
+        ...
+        };
+```
+And then call the **addItems** on the adapter object to add the items at the end of the list.
 
-# Spread Some :heart:
-[![GitHub followers](https://img.shields.io/github/followers/manojbhadane.svg?style=social&label=Follow)](https://github.com/manojbhadane)  [![Twitter Follow](https://img.shields.io/twitter/follow/manojbhadane.svg?style=social)](https://twitter.com/Manoj_bhadane) 
+## Binding the data to the view
+Instead of binding the data manually in the **onBindData** function, the library takes cares of this internally, and you can access that data through the XML.
+The data variable name should be set to "data" for this to work. Example how a layout file should like in order to use this function.
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-# About The Author
+    <data>
+        <variable
+            name="data"
+            type="com.arena.tv.models.model.Radio" />
 
-### Manoj Bhadane
+        <import type="android.view.View" />
+    </data>
 
-Android & Backend Developer.
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <TextView
+            android:id="@+id/txt_name"
+            android:text="@{data.name}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:imageUrl="@{data.stream_icon}" /> 
+            <!-- imageUrl function is provided by a Binding Adapter, that is out of scope for this library-->
+    </FrameLayout>
 
-<a href="https://medium.com/@manojbhadane"><img src="https://github.com/manojbhadane/Social-Icons/blob/master/medium-icon.png?raw=true" width="60"></a>
-<a href="https://stackoverflow.com/users/4034678/manoj-bhadane"><img src="https://github.com/manojbhadane/Social-Icons/blob/master/stackoverflow-icon.png?raw=true" width="60"></a>
-<a href="https://twitter.com/Manoj_bhadane"><img src="https://github.com/manojbhadane/Social-Icons/blob/master/twitter-icon.png?raw=true" width="60"></a>
-<a href="https://in.linkedin.com/in/manojbhadane"><img src="https://github.com/manojbhadane/Social-Icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
-
-# If this library helps you in anyway, show your love :heart: by putting a :star: on this project :v:
+</layout>
+```
 
 # License
 
