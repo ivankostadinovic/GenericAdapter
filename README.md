@@ -99,8 +99,9 @@ Both adapters have support for pagination. If you wish to use pagination with th
                 //make API/db call
             }
         ...
+        //when new items are fetched, add them to the adapter
+        adapter.addItems(newItems);
 ```
-And then call the **addItems** on the adapter object to add the items at the end of the list.
 
 ## Binding the data to the view
 Instead of binding the data manually in the **onBindData** function, the library takes cares of this internally, and you can access that data through the XML.
