@@ -61,7 +61,7 @@ dataBinding {
 ### Sample code of adapter with filter
 ```Java
 	EditText editSearch = findViewById(R.id.editSearch);
-        adapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, editSearch) {
+        filterAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, editSearch) {
             @Override
             public void onBindData(Radio model, int position, RvRadioItemBinding dataBinding) {
 
@@ -104,6 +104,14 @@ Both adapters have support for pagination. If you wish to use pagination with th
         ...
         //when new items are fetched, add them to the adapter
         adapter.addItems(newItems);
+```
+This method is called when the adapter method **onBindData** is called for an item that is close to the end of the item list. 
+By default, the pagination offset is 3, meaning that when **onBindData** is called with the position being **getItemCount() - 3**, the **loadMoreItems** method is called.
+You can change this offset by creating any of the adapters with the additional parameter in constructor:
+```java
+adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, 10) {...}
+
+filterAdapter = new GenericFilterAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, 10) {...}
 ```
 
 ## Binding data to the view
