@@ -82,7 +82,7 @@ dataBinding {
 ```
 
 ## OnCreateHolder override
-This method is called when adapter method **onCreateViewHolder** is called. You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** method:
+This method is called when adapter method **onCreateViewHolder** is called. You can optionally add things like focus listeners that would require to be set only once per view holder:
 ```Java
         ...
           @Override
