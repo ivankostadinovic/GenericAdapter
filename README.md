@@ -81,7 +81,7 @@ dataBinding {
         //don't forget to set a LayoutManager to the recycler view
 ```
 
-## OnCreateViewHolder override
+## OnCreateHolder override
 This method is called when adapter method **onCreateViewHolder** is called. You can optionally add things like focus listeners that would require to be set only once per view holder to the **onCreateHolder** method:
 ```Java
         ...
