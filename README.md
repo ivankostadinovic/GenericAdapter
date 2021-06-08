@@ -105,8 +105,8 @@ Both adapters have support for pagination. If you wish to use pagination with th
         //when new items are fetched, add them to the adapter
         adapter.addItems(newItems);
 ```
-This method is called when the adapter method **onBindData** is called for an item that is close to the end of the item list. 
-By default, the pagination offset is 3, meaning that when **onBindData** is called with the position being **getItemCount() - 3**, the **loadMoreItems** method is called.
+This method is called when the adapter method **onBindViewHolder** is called for an item that is close to the end of the item list. 
+By default, the pagination offset is 3, meaning that when **onBindViewHolder** is called with the position being **getItemCount() - 3**, the **loadMoreItems** method is called.
 You can change this offset by creating any of the adapters with the additional parameter in constructor:
 ```java
 adapter = new GenericAdapter<Radio, RvRadioItemBinding>(radios, R.layout.rv_radio_item, 10) {...}
