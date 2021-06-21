@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jakewharton.rxbinding4.widget.RxTextView;
@@ -24,7 +26,7 @@ import kotlin.collections.CollectionsKt;
  * edited by ivankostadinovic1994@outlook.com
  */
 
-public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<GenericFilterAdapter<T, D>.ItemViewHolder> {
+public abstract class GenericListFilterAdapter<T, D extends ViewDataBinding> extends ListAdapter<T, GenericListFilterAdapter<T, D>.ItemViewHolder> {
 
     private List<T> list = new ArrayList<>();
     private List<T> filteredList = new ArrayList<>();
@@ -48,7 +50,8 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
 
     }
 
-    public GenericFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView) {
+    public GenericListFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView, DiffUtil.ItemCallback<T> callback) {
+        super(callback);
         this.list.addAll(arrayList);
         this.filteredList.addAll(arrayList);
         this.layoutResId = layoutResId;
@@ -59,7 +62,8 @@ public abstract class GenericFilterAdapter<T, D extends ViewDataBinding> extends
             .subscribe(this::filterList);
     }
 
-    public GenericFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView, int paginationOffset) {
+    public GenericListFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView, DiffUtil.ItemCallback<T> callback, int paginationOffset) {
+        super(callback);
         this.list.addAll(arrayList);
         this.filteredList.addAll(arrayList);
         this.layoutResId = layoutResId;

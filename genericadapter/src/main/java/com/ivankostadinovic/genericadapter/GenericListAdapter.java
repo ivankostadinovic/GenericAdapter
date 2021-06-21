@@ -8,8 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
  * edited by ivankostadinovic1994@outlook.com
  */
 
-public abstract class GenericAdapter<T, D extends ViewDataBinding> extends RecyclerView.Adapter<GenericAdapter<T, D>.ItemViewHolder> {
+public abstract class GenericListAdapter<T, D extends ViewDataBinding> extends ListAdapter<T, GenericListAdapter<T, D>.ItemViewHolder> {
 
     public static final int DEFAULT_PAGINATION_OFFSET = 3;
 
@@ -27,12 +31,14 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     private final int layoutResId;
     private int paginationOffset = DEFAULT_PAGINATION_OFFSET;
 
-    public GenericAdapter(List<T> arrayList, @LayoutRes int layoutResId) {
+    public GenericListAdapter(List<T> arrayList, @LayoutRes int layoutResId, DiffUtil.ItemCallback<T> itemCallback) {
+        super(itemCallback);
         this.list.addAll(arrayList);
         this.layoutResId = layoutResId;
     }
 
-    public GenericAdapter(List<T> arrayList, @LayoutRes int layoutResId, int paginationOffset) {
+    public GenericListAdapter(List<T> arrayList, @LayoutRes int layoutResId, DiffUtil.ItemCallback<T> itemCallback, int paginationOffset) {
+        super(itemCallback);
         this.list = new ArrayList<>();
         this.list.addAll(arrayList);
         this.layoutResId = layoutResId;
@@ -51,15 +57,16 @@ public abstract class GenericAdapter<T, D extends ViewDataBinding> extends Recyc
     }
 
     @NonNull
+    @NotNull
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         D dataBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutResId, parent, false);
         onCreateHolder(dataBinding);
         return new ItemViewHolder(dataBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull @NotNull ItemViewHolder holder, int position, @NonNull @NotNull List<Object> payloads) {
         final T item = list.get(position);
         holder.dataBinding.setVariable(BR.data, item);
         onBindData(item, position, holder.dataBinding);
