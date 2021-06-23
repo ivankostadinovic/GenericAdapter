@@ -217,6 +217,7 @@ Why you should use adapters that extend from ListAdapter instead of RecyclerView
             }
         };
         recyclerView.setAdapter(adapter);
+	//don't forget to add a LayoutManager to the RecyclerView
 ```
 
 
