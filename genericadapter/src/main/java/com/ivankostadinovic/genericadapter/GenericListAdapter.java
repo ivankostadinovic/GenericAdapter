@@ -66,7 +66,7 @@ public abstract class GenericListAdapter<T, D extends ViewDataBinding> extends L
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ItemViewHolder holder, int position, @NonNull @NotNull List<Object> payloads) {
+    public void onBindViewHolder(@NonNull @NotNull ItemViewHolder holder, int position) {
         final T item = list.get(position);
         holder.dataBinding.setVariable(BR.data, item);
         onBindData(item, position, holder.dataBinding);
