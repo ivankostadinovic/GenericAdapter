@@ -7,13 +7,16 @@ An Easy to use adapter for android, a fork from [GenericAdapter](https://github.
 3. More readable code
 
 # Supports 4 types of adapters
-***GenericAdapter :*** Adapter for simple usage
 
-***GenericFilterAdapter :*** Adapter with list filtering capability
+### For simple usage
+* ***GenericAdapter :*** extends from RecyclerView.Adapter
 
-***GenericListAdapter :*** Adapter for simple usage, extending ListAdapter instead of RecyclerView.Adapter
+* ***GenericListAdapter :*** extends from ListAdapter
 
-***GenericListFilterAdapter :*** Adapter with list filtering capability, extending ListAdapter instead of RecyclerView.Adapter
+### With list filtering capacity
+* ***GenericFilterAdapter :*** extends from RecyclerView.Adapter
+
+* ***GenericListFilterAdapter :*** extends from ListAdapter
 
 
 # Download
@@ -183,7 +186,9 @@ If you don't like this, you can still bind the data in the **onBindData** method
 ## GenericListAdapter and GenericListFilterAdapter
 
 Usage is the same as the **GenericAdapter** and **GenericFilterAdapter**, these just require a **DiffUtil.ItemCallback** passed via the constructors. 
+
 Why you should use adapters that extend from ListAdapter instead of RecyclerView.Adapter:
+
 [ListAdapter: A RecyclerView Adapter Extension](https://medium.com/simform-engineering/listadapter-a-recyclerview-adapter-extension-5359d13bd879)
 
 
