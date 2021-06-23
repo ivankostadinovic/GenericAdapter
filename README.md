@@ -192,7 +192,7 @@ Why you should use adapters that extend from ListAdapter instead of RecyclerView
 [ListAdapter: A RecyclerView Adapter Extension](https://medium.com/simform-engineering/listadapter-a-recyclerview-adapter-extension-5359d13bd879)
 
 
-```
+```java
 	DiffUtil.ItemCallback<Radio> itemCallback = new DiffUtil.ItemCallback<ListItem>() {
             @Override
             public boolean areItemsTheSame(@NonNull @NotNull Radio oldItem, @NonNull @NotNull Radio newItem) {
