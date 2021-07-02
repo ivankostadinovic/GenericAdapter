@@ -38,7 +38,7 @@ allprojects
 **Step 2.** Add the dependency in your apps module build.gradle
 ```Gradle
 dependencies {
-    implementation 'com.github.ivankostadinovic:GenericAdapter:1.5.3'
+    implementation 'com.github.ivankostadinovic:GenericAdapter:1.5.5'
 }
 ```
 
