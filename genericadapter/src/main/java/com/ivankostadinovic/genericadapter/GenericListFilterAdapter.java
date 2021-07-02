@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jakewharton.rxbinding4.widget.RxTextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public abstract class GenericListFilterAdapter<T, D extends ViewDataBinding> ext
     private List<T> list = new ArrayList<>();
     private List<T> filteredList = new ArrayList<>();
     private final int layoutResId;
-    private final Disposable searchDisposable;
+    private Disposable searchDisposable;
     private final EditText searchView;
     public static final int DEFAULT_PAGINATION_OFFSET = 3;
 
@@ -56,10 +58,6 @@ public abstract class GenericListFilterAdapter<T, D extends ViewDataBinding> ext
         this.filteredList.addAll(arrayList);
         this.layoutResId = layoutResId;
         this.searchView = searchView;
-
-        searchDisposable = RxTextView
-            .textChanges(searchView)
-            .subscribe(this::filterList);
     }
 
     public GenericListFilterAdapter(List<T> arrayList, @LayoutRes int layoutResId, EditText searchView, DiffUtil.ItemCallback<T> callback, int paginationOffset) {
@@ -69,15 +67,19 @@ public abstract class GenericListFilterAdapter<T, D extends ViewDataBinding> ext
         this.layoutResId = layoutResId;
         this.searchView = searchView;
         this.paginationOffset = paginationOffset;
-
-        searchDisposable = RxTextView
-            .textChanges(searchView)
-            .subscribe(this::filterList);
     }
 
     private void filterList(CharSequence text) {
         filteredList = CollectionsKt.filter(list, item -> filter(item, text.toString()));
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull @NotNull RecyclerView recyclerView) {
+        searchDisposable = RxTextView
+            .textChanges(searchView)
+            .subscribe(this::filterList);
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override
